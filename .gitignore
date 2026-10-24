@@ -1,0 +1,5 @@
+.DS_Store
+.xzap
+bin/
+dist/
+DerivedData/
