@@ -1,0 +1,41 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      RELEASE_TAG: ${{ github.ref_name }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-go@v7
+        with:
+          go-version: stable
+
+      - name: Check
+        run: |
+          go test -race ./...
+          go vet ./...
+
+      - name: Build and package Apple Silicon binary
+        run: make release VERSION="$RELEASE_TAG"
+
+      - name: Publish GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "$RELEASE_TAG" dist/*.tar.gz dist/checksums.txt dist/install.sh \
+            --verify-tag --generate-notes --title "$RELEASE_TAG"
