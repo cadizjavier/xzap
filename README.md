@@ -1,8 +1,8 @@
 # xzap
 
-Build, launch, and test iOS apps from the terminal, on Simulators or paired
-physical devices. xzap wraps Xcode's tools with short commands, saved device
-choices, and compact output that keeps errors visible.
+Handy wrappers around Xcode's `xcodebuild`, `simctl`, and `devicectl`.
+Build, launch, and test iOS apps on Simulators or paired physical devices with
+short commands, saved device choices, and compact output.
 
 ## Install
 
@@ -16,15 +16,6 @@ curl -fsSL https://github.com/cadizjavier/xzap/releases/latest/download/install.
 
 Installs to `~/.local/bin`, verifies the checksum, and prints PATH setup if needed.
 Or download the archive from [Releases](https://github.com/cadizjavier/xzap/releases).
-
-Or build from source with Go 1.25.6+:
-
-```bash
-go install github.com/cadizjavier/xzap/cmd/xzap@latest
-```
-
-Add `GOBIN` (default: `$(go env GOPATH)/bin`) to your `PATH`.
-Local builds: `make install` (add `~/.local/bin` to your `PATH`).
 
 ## Start
 
@@ -56,20 +47,20 @@ in Xcode.
 
 ## Contributing
 
+Build from source with Go 1.25.6+:
+
+```bash
+go install github.com/cadizjavier/xzap/cmd/xzap@latest
+```
+
+Add `GOBIN` (default: `$(go env GOPATH)/bin`) to your `PATH`.
+For a local checkout, use `make install` (installs to `~/.local/bin`).
+
 Issues and pull requests welcome. Check changes with:
 
 ```bash
 go test ./...
 go vet ./...
 ```
-
-## Releasing
-
-Git tags are the version source; untagged local builds report `dev`.
-Push a version tag (e.g. `git tag v0.0.1` then `git push origin v0.0.1`).
-GitHub Actions checks the code on Linux, cross-compiles for Apple Silicon, and
-publishes the archive and checksum under Releases.
-Build the same files locally with `make release` from the tagged commit
-(output: `dist/`), or set `VERSION=v0.0.1` explicitly.
 
 [MIT License](LICENSE) © 2026 Javier Cadiz.
